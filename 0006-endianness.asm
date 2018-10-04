@@ -1,16 +1,19 @@
 ; Print_newline e print_hex
 ; Imprime uma nova linha e pegar um número e imprimir
+; Duas formas diferentes de imprimir números na tela
 ; 
 ; Para buildar:
-; nasm -felf64 0005-print_call.asm -o 0005-print_call.o
-; ld -o 0005-print_call 0005-print_call.o
-; chmod u+x 0005-print_call
+; nasm -felf64 0006-endianness.asm -o 0006-endianness.o
+; ld -o 0006-endianness 0006-endianness.o
+; chmod u+x 0006-endianness
 
 
 
 section .data
 codes:			db	'0123456789abcdef'
 newLine_char:	db	10
+demo1:			dq	0x1122334455667788	; quadword
+demo2:			db	0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88
 
 section .text
 global _start
@@ -54,8 +57,14 @@ print_hex:
 
 
 _start:
-	mov rdi, 0x1122334455667788
+	
+	xor rdi, rdi
 
+	mov rdi, [demo1]
+	call print_hex
+	call print_newline
+
+	mov rdi, [demo2]
 	call print_hex
 	call print_newline
 
